@@ -46,9 +46,6 @@
     <div class="form__header">
         <p class="form__header-title">Admin</p>
     </div>
-    <div class="pagination">
-        {{ $contacts->appends(request()->input())->links() }}
-    </div>
     <div class="search-list">
         <form action="" method="get">
             <div class="search-form">
@@ -76,14 +73,18 @@
                 </div>
                 <div class="search__button">
                     <button type="submit" class="search__button-submit">検索</button>
-                    <button class="search__button-reset" type="reset">リセット</button>
+                    <button class="search__button-reset" type="reset" onclick="window.location.href = '{{ url()->current() }}';">リセット</button>
+
                 </div>
             </div>
         </form>
     </div>
-    <div class="pagination">
+    <div class="pagination-container">
+        <div class="Pagination">
         {{ $contacts->links() }}
+        </div>
     </div>
+
     <div class="data-table">
         <table class="data-table__inner">
             <tr class="data-table__row">
@@ -109,7 +110,7 @@
                     @else その他
                     @endif
                 </td>
-                <td class="data-table__button">
+                <td class="table__button">
                     <button type="button" class="data-table__button" onclick="openModal(this)" data-id="{{ $contact->id }}">詳細</button>
                 </td>
             </tr>
@@ -118,7 +119,6 @@
     </div>
 </div>
 
-<!-- モーダル部分 -->
 <div id="contactModal" class="modal">
     <div class="modal-content">
         <span class="modal-close" onclick="closeModal()">閉じる</span>
@@ -132,58 +132,50 @@
 
 @section('js')
 <script>
-    // モーダルを開く関数
     function openModal(button) {
-        var contactId = button.getAttribute('data-id');
-        console.log('Opening modal for contact ID:', contactId); // デバッグ用
+    var contactId = button.getAttribute('data-id');
 
-        // Ajaxリクエストを使って詳細情報を取得
-        fetch(`/admin/contacts/${contactId}`)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('ネットワークエラー');
-                }
-                return response.json();
-            })
-            .then(data => {
-                console.log(data);
-                var modalContent = document.getElementById('modalContent');
-                
-                // 性別やお問い合わせ内容を変換
-                var gender = data.gender === 1 ? '男性' : (data.gender === 2 ? '女性' : 'その他');
-                var category = data.category === 1 ? 'ご質問' : (data.category === 2 ? 'ご意見' : 'その他');
+    fetch(`/admin/contacts/${contactId}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('ネットワークエラー');
+            }
+            return response.json();
+        })
+        .then(data => {
+            var modalContent = document.getElementById('modalContent');
 
-                modalContent.innerHTML = `
-                    <p><strong>お名前:</strong> ${data.last_name} ${data.first_name}</p>
-                    <p><strong>性別:</strong> ${gender}</p>
-                    <p><strong>メールアドレス:</strong> ${data.email}</p>
-                    <p><strong>お問い合せの種類:</strong> ${category}</p>
-                    <p><strong>お問い合わせ内容:</strong> ${data.detail}</p>
-                `;
-                
-                // モーダルを表示
-                var modal = document.getElementById('contactModal');
-                modal.style.display = 'flex';
-            })
-            .catch(error => {
-                console.error('Error fetching contact details:', error);
-                alert('詳細情報の取得に失敗しました');
-            });
-    }
+            // 性別とカテゴリはすでに文字列で返されるので、直接使用します。
+            modalContent.innerHTML = `
+                <p><strong>お名前:</strong> ${data.last_name} ${data.first_name}</p>
+                <p><strong>性別:</strong> ${data.gender}</p>
+                <p><strong>メールアドレス:</strong> ${data.email}</p>
+                <p><strong>お問い合せの種類:</strong> ${data.category}</p>
+                <p><strong>お問い合わせ内容:</strong> ${data.detail}</p>
+            `;
+            var modal = document.getElementById('contactModal');
+            modal.style.display = 'flex';
+        })
+        .catch(error => {
+            console.error('Error fetching contact details:', error);
+            alert('詳細情報の取得に失敗しました');
+        });
+}
 
-    // モーダルを閉じる関数
+
+
     function closeModal() {
-        var modal = document.getElementById('contactModal');
-        if (modal) {
-            modal.style.display = 'none';
-        }
+    var modal = document.getElementById('contactModal');
+    if (modal) {
+        modal.style.display = 'none'; // モーダルを非表示
     }
+}
 
-    // 背景クリックでモーダルを閉じる
-    document.getElementById('contactModal').addEventListener('click', function(event) {
-        if (event.target === this) {
-            closeModal();
-        }
-    });
+document.getElementById('contactModal').addEventListener('click', function(event) {
+    if (event.target === this) {
+        closeModal(); // 背景クリックでモーダルを閉じる
+    }
+});
+
 </script>
 @endsection

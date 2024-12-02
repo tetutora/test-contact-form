@@ -11,7 +11,7 @@
             <p>Register</p>
         </div>
         <div class="register-form">
-            <form class="register-form__inner" action="{{ url('/register') }}" method="post">
+            <form class="register-form__inner" action="/register" method="post">
                 @csrf
                 <div class="register-form__input">
                     <div class="register-fom__input-name">
@@ -34,18 +34,18 @@
                 <div class="register-form__input">
                     <div class="register-fom__input-pass">
                         <div class="input-label">パスワード</div>
-                        <input type="password" name="password" class="input-pass" placeholder="例:alskdjfhg">
+                        <input type="password" name="password" class="input-pass" placeholder="例:asdfghjkl">
                         @error('password')
                             <div class="error-message">{{ $message }}</div>
                         @enderror
                     </div>
                 </div>
-                <!-- <div class="register-form__input">
+                <div class="register-form__input">
                     <div class="register-fom__input-pass_confirmation">
                         <div class="input-label">パスワード確認</div>
                         <input type="password" name="password_confirmation" class="input-pass" placeholder="確認用パスワード">
                     </div>
-                </div> -->
+                </div>
                 <div class="register-form__button">
                     <button type="submit" class="register-form__button-submit">登録</button>
                 </div>
