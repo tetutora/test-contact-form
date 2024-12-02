@@ -16,7 +16,7 @@
                 <tr class="confirm-table__row">
                     <th class="confirm-table__header">お名前</th>
                     <td class="confirm-table__input">
-                        <input class="confirm-table__input-name" type="text" name="name" value="{{ $contact['last-name'] ?? '' }} {{ $contact['first-name'] ?? '' }}" readonly>
+                        <input class="confirm-table__input-name" type="text" name="name" value="{{ $contact['last_name'] ?? '' }} {{ $contact['first_name'] ?? '' }}" readonly>
                     </td>
                 </tr>
                 <tr class="confirm-table__row">
@@ -52,13 +52,13 @@
                 <tr class="confirm-table__row">
                     <th class="confirm-table__header">お問い合せの種類</th>
                     <td class="confirm-table__input">
-                        <input class="confirm-table__input-category" type="text" name="category" value="{{ $contact['category'] ?? '' }}" readonly>
+                        <input class="confirm-table__input-category" type="text" name="category" value="{{ $contact['category_id'] ?? '' }}" readonly>
                     </td>
                 </tr>
                 <tr class="confirm-table__row">
                     <th class="confirm-table__header">お問い合せ内容</th>
                     <td class="confirm-table__input">
-                        <input class="confirm-table__input-content" type="text" name="content" value="{{ $contact['content'] ?? '' }}" readonly>
+                        <input class="confirm-table__input-content" type="text" name="detail" value="{{ $contact['detail'] ?? '' }}" readonly>
                     </td>
                 </tr>
             </table>

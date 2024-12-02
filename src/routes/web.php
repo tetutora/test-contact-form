@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\AdminController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,7 +18,12 @@ use App\Http\Controllers\ContactController;
 Route::controller(ContactController::class)->group(function ()
 {
     Route::get('/', 'index');
-    Route::post('/confirm', 'confirm');
-    Route::get('/thanks', 'store');
+    Route::post('/confirm', 'store');
     Route::get('/thanks', 'thanks');
+});
+
+Route::controller(AdminController::class)->group(function ()
+{
+    Route::get('admin','search');
+    Route::get('/admin/contacts/{id}','show');
 });

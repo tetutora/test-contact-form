@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\ContactRequest;
+use App\Models\Contact;
 
 class ContactController extends Controller
 {
@@ -13,32 +15,47 @@ class ContactController extends Controller
         return view('index',compact('contact'));
     }
 
-    public function confirm(Request $request)
-    {
-        $contact = $request->only([
-            'last-name','first-name','gender','email','tel1','tel2','tel3','address','building','category','content'
-        ]);
+    public function store(Request $request)
+{
+    $contact = $request->only([
+        'last_name', 'first_name', 'gender', 'email', 'tel1', 'tel2', 'tel3', 'address', 'building', 'category', 'detail'
+    ]);
 
-        $request->session()->put('contact', $contact);
+    $categoryId = $this->getCategoryId($contact['category']);
+    $contact['category_id'] = $categoryId;
 
-        return view('confirm',compact('contact'));
+    Contact::create($contact);
+
+    return view('confirm', compact('contact'));
     }
 
+private function getCategoryId($category)
+{
+    $categoryMap = [
+        'ご質問' => 1,
+        'ご意見' => 2,
+        'その他' => 3,
+    ];
 
-    public function store(Request $request)
+    return $categoryMap[$category] ?? null;
+}
+
+
+    public function confirm(ContactRequest $request)
     {
-        $contact = $request->session()->get('contact');
-        $request->session()->forget('contact');
+        $contact = $request->only([
+            'last_name', 'first_name', 'gender', 'email', 'tel1', 'tel2', 'tel3', 'address', 'building', 'category_id', 'detail'
+        ]);
 
-        return redirect('/');
+        return view('confirm', compact('contact'));
     }
 
     public function thanks(Request $request)
     {
-        $contact = $request->session()->get('contact');
 
-        return view('thanks', compact('contact'));
+        return view('thanks');
     }
+
 
 
 }
