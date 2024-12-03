@@ -6,9 +6,9 @@ test-contact-form
 Dockerビルド
 
 1.https://github.com/tetutora/test-contact-form
-  
+
 2.docker-compose up -d --build
-  
+
 ※MySQLは、OSによって起動しない場合があるのでそれぞれのPCに合わせてdocker-compose.ymlファイルを編集してください。
 
 

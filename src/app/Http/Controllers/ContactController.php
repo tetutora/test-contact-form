@@ -23,7 +23,7 @@ class ContactController extends Controller
 
     // genderを文字列から数値に変換
     $contact['gender'] = $this->getGenderId($contact['gender']);
-    
+
     // categoryの変換
     $categoryId = $this->getCategoryId($contact['category']);
     $contact['category_id'] = $categoryId;
